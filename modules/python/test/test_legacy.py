@@ -20,8 +20,15 @@ class Hackathon244Tests(NewOpenCVTests):
         flag, ajpg = cv.imencode("img_q90.jpg", a, [cv.IMWRITE_JPEG_QUALITY, 90])
         self.assertEqual(flag, True)
         self.assertEqual(ajpg.dtype, np.uint8)
-        self.assertTrue(isinstance(ajpg, np.ndarray), "imencode returned buffer of wrong type: {}".format(type(ajpg)))
-        self.assertEqual(len(ajpg.shape), 1, "imencode returned buffer with wrong shape: {}".format(ajpg.shape))
+        self.assertTrue(
+            isinstance(ajpg, np.ndarray),
+            f"imencode returned buffer of wrong type: {type(ajpg)}",
+        )
+        self.assertEqual(
+            len(ajpg.shape),
+            1,
+            f"imencode returned buffer with wrong shape: {ajpg.shape}",
+        )
         self.assertGreaterEqual(len(ajpg), 1, "imencode length of the returned buffer should be at least 1")
         self.assertLessEqual(
             len(ajpg), a.size,

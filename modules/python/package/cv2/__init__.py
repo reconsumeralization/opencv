@@ -21,8 +21,8 @@ except ImportError:
 
 
 def __load_extra_py_code_for_module(base, name, enable_debug_print=False):
-    module_name = "{}.{}".format(__name__, name)
-    export_module_name = "{}.{}".format(base, name)
+    module_name = f"{__name__}.{name}"
+    export_module_name = f"{base}.{name}"
     native_module = sys.modules.pop(module_name, None)
     try:
         py_module = importlib.import_module(module_name)
@@ -41,7 +41,8 @@ def __load_extra_py_code_for_module(base, name, enable_debug_print=False):
         setattr(py_module, "_native", native_module)
         for k, v in filter(lambda kv: not hasattr(py_module, kv[0]),
                            native_module.__dict__.items()):
-            if enable_debug_print: print('    symbol({}): {} = {}'.format(name, k, v))
+            if enable_debug_print:
+                print(f'    symbol({name}): {k} = {v}')
             setattr(py_module, k, v)
     return True
 
@@ -127,10 +128,8 @@ def bootstrap():
                 applySysPathWorkaround = True
         except:
             if DEBUG: print('OpenCV loader: exception during checking workaround for sys.path[0]')
-            pass  # applySysPathWorkaround is False
-
     for p in reversed(l_vars['PYTHON_EXTENSIONS_PATHS']):
-        sys.path.insert(1 if not applySysPathWorkaround else 0, p)
+        sys.path.insert(0 if applySysPathWorkaround else 1, p)
 
     if os.name == 'nt':
         if sys.version_info[:2] >= (3, 8):  # https://github.com/python/cpython/pull/12302
@@ -138,8 +137,8 @@ def bootstrap():
                 try:
                     os.add_dll_directory(p)
                 except Exception as e:
-                    if DEBUG: print('Failed os.add_dll_directory(): '+ str(e))
-                    pass
+                    if DEBUG:
+                        print(f'Failed os.add_dll_directory(): {str(e)}')
         os.environ['PATH'] = ';'.join(l_vars['BINARIES_PATHS']) + ';' + os.environ.get('PATH', '')
         if DEBUG: print('OpenCV loader: PATH={}'.format(str(os.environ['PATH'])))
     else:
@@ -172,9 +171,8 @@ def bootstrap():
     if DEBUG: print('OpenCV loader: binary extension... OK')
 
     for submodule in __collect_extra_submodules(DEBUG):
-        if __load_extra_py_code_for_module("cv2", submodule, DEBUG):
-            if DEBUG: print("Extra Python code for", submodule, "is loaded")
-
+        if __load_extra_py_code_for_module("cv2", submodule, DEBUG) and DEBUG:
+            print("Extra Python code for", submodule, "is loaded")
     if DEBUG: print('OpenCV loader: DONE')
 
 

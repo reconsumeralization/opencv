@@ -24,24 +24,20 @@ class Tutorial(object):
         rx_prev = re.compile(r"@prev_tutorial\{(\w+)\}")
         rx_next = re.compile(r"@next_tutorial\{(\w+)\}")
         for line in f:
-            if self.title is None:
-                m = rx_title.search(line)
-                if m:
-                    self.title = m.group(1)
+            if m := rx_title.search(line):
+                if self.title is None:
+                    self.title = m[1]
                     continue
-            if self.prev is None:
-                m = rx_prev.search(line)
-                if m:
-                    self.prev = m.group(1)
+            if m := rx_prev.search(line):
+                if self.prev is None:
+                    self.prev = m[1]
                     continue
-            if self.next is None:
-                m = rx_next.search(line)
-                if m:
-                    self.next = m.group(1)
+            if m := rx_next.search(line):
+                if self.next is None:
+                    self.next = m[1]
                     continue
-            m = rx_subpage.search(line)
-            if m:
-                self.children.append(m.group(1))
+            if m := rx_subpage.search(line):
+                self.children.append(m[1])
                 continue
 
     def verify_prev_next(self, storage):
@@ -55,7 +51,7 @@ class Tutorial(object):
         for one in self.children:
             c = storage[one]
             if c.prev is not None and c.prev != prev:
-                print("[W] Wrong prev_tutorial: expected {} / actual {}".format(c.prev, prev))
+                print(f"[W] Wrong prev_tutorial: expected {c.prev} / actual {prev}")
                 res = False
             prev = c.title
 
@@ -63,7 +59,7 @@ class Tutorial(object):
         for one in reversed(self.children):
             c = storage[one]
             if c.next is not None and c.next != next:
-                print("[W] Wrong next_tutorial: expected {} / actual {}".format(c.next, next))
+                print(f"[W] Wrong next_tutorial: expected {c.next} / actual {next}")
                 res = False
             next = c.title
 
@@ -76,20 +72,20 @@ class Tutorial(object):
 if __name__ == "__main__":
 
     p = Path('tutorials')
-    print("Looking for tutorials in: '{}'".format(p))
+    print(f"Looking for tutorials in: '{p}'")
 
-    all_tutorials = dict()
+    all_tutorials = {}
     for f in p.glob('**/*'):
         if f.suffix.lower() in ('.markdown', '.md'):
             t = Tutorial(f)
             all_tutorials[t.title] = t
 
     res = 0
-    print("Found: {}".format(len(all_tutorials)))
+    print(f"Found: {len(all_tutorials)}")
     print("------")
-    for title, t in all_tutorials.items():
+    for t in all_tutorials.values():
         if not t.verify_prev_next(all_tutorials):
-            print("[E] Verification failed: {}".format(t.path))
+            print(f"[E] Verification failed: {t.path}")
             print("------")
             res = 1
 

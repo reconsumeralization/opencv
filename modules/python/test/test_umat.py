@@ -13,7 +13,7 @@ def load_exposure_seq(path):
     images = []
     times = []
     with open(os.path.join(path, 'list.txt'), 'r') as list_file:
-        for line in list_file.readlines():
+        for line in list_file:
             name, time = line.split()
             images.append(cv.imread(os.path.join(path, name)))
             times.append(1. / float(time))

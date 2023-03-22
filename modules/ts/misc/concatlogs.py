@@ -5,6 +5,7 @@ HTML header from the first document will be used in the output document. Largest
 `<tbody>...</tbody>` part from each document will be joined together.
 """
 
+
 from optparse import OptionParser
 import glob, sys, os, re
 
@@ -43,7 +44,7 @@ if __name__ == "__main__":
     if html:
         idx1 = text.find("<title>") + len("<title>")
         idx2 = html.find("</title>")
-        html = html[:idx1] + "OpenCV performance testing report" + html[idx2:]
+        html = f"{html[:idx1]}OpenCV performance testing report{html[idx2:]}"
         open(options.output, "w").write(html)
     else:
         sys.stderr.write("Error: no input data")

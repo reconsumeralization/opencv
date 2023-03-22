@@ -34,12 +34,18 @@ try:
 
         def test_age_gender_infer(self):
             # NB: Check IE
-            if not cv.dnn.DNN_TARGET_CPU in cv.dnn.getAvailableTargets(cv.dnn.DNN_BACKEND_INFERENCE_ENGINE):
+            if cv.dnn.DNN_TARGET_CPU not in cv.dnn.getAvailableTargets(
+                cv.dnn.DNN_BACKEND_INFERENCE_ENGINE
+            ):
                 return
 
             root_path    = '/omz_intel_models/intel/age-gender-recognition-retail-0013/FP32/age-gender-recognition-retail-0013'
-            model_path   = self.find_file(root_path + '.xml',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
-            weights_path = self.find_file(root_path + '.bin',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
+            model_path = self.find_file(
+                f'{root_path}.xml', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
+            weights_path = self.find_file(
+                f'{root_path}.bin', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
             device_id    = 'CPU'
 
             img_path  = self.find_file('cv/face/david2.jpg', [os.environ.get('OPENCV_TEST_DATA_PATH')])
@@ -69,12 +75,18 @@ try:
 
         def test_age_gender_infer_roi(self):
             # NB: Check IE
-            if not cv.dnn.DNN_TARGET_CPU in cv.dnn.getAvailableTargets(cv.dnn.DNN_BACKEND_INFERENCE_ENGINE):
+            if cv.dnn.DNN_TARGET_CPU not in cv.dnn.getAvailableTargets(
+                cv.dnn.DNN_BACKEND_INFERENCE_ENGINE
+            ):
                 return
 
             root_path    = '/omz_intel_models/intel/age-gender-recognition-retail-0013/FP32/age-gender-recognition-retail-0013'
-            model_path   = self.find_file(root_path + '.xml',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
-            weights_path = self.find_file(root_path + '.bin',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
+            model_path = self.find_file(
+                f'{root_path}.xml', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
+            weights_path = self.find_file(
+                f'{root_path}.bin', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
             device_id    = 'CPU'
 
             img_path = self.find_file('cv/face/david2.jpg', [os.environ.get('OPENCV_TEST_DATA_PATH')])
@@ -108,12 +120,18 @@ try:
 
         def test_age_gender_infer_roi_list(self):
             # NB: Check IE
-            if not cv.dnn.DNN_TARGET_CPU in cv.dnn.getAvailableTargets(cv.dnn.DNN_BACKEND_INFERENCE_ENGINE):
+            if cv.dnn.DNN_TARGET_CPU not in cv.dnn.getAvailableTargets(
+                cv.dnn.DNN_BACKEND_INFERENCE_ENGINE
+            ):
                 return
 
             root_path    = '/omz_intel_models/intel/age-gender-recognition-retail-0013/FP32/age-gender-recognition-retail-0013'
-            model_path   = self.find_file(root_path + '.xml',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
-            weights_path = self.find_file(root_path + '.bin',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
+            model_path = self.find_file(
+                f'{root_path}.xml', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
+            weights_path = self.find_file(
+                f'{root_path}.bin', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
             device_id    = 'CPU'
 
             rois = [(10, 15, 62, 62), (23, 50, 62, 62), (14, 100, 62, 62), (80, 50, 62, 62)]
@@ -157,12 +175,18 @@ try:
 
         def test_age_gender_infer2_roi(self):
             # NB: Check IE
-            if not cv.dnn.DNN_TARGET_CPU in cv.dnn.getAvailableTargets(cv.dnn.DNN_BACKEND_INFERENCE_ENGINE):
+            if cv.dnn.DNN_TARGET_CPU not in cv.dnn.getAvailableTargets(
+                cv.dnn.DNN_BACKEND_INFERENCE_ENGINE
+            ):
                 return
 
             root_path    = '/omz_intel_models/intel/age-gender-recognition-retail-0013/FP32/age-gender-recognition-retail-0013'
-            model_path   = self.find_file(root_path + '.xml',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
-            weights_path = self.find_file(root_path + '.bin',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
+            model_path = self.find_file(
+                f'{root_path}.xml', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
+            weights_path = self.find_file(
+                f'{root_path}.bin', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
             device_id    = 'CPU'
 
             rois = [(10, 15, 62, 62), (23, 50, 62, 62), (14, 100, 62, 62), (80, 50, 62, 62)]
@@ -207,12 +231,18 @@ try:
 
         def test_person_detection_retail_0013(self):
             # NB: Check IE
-            if not cv.dnn.DNN_TARGET_CPU in cv.dnn.getAvailableTargets(cv.dnn.DNN_BACKEND_INFERENCE_ENGINE):
+            if cv.dnn.DNN_TARGET_CPU not in cv.dnn.getAvailableTargets(
+                cv.dnn.DNN_BACKEND_INFERENCE_ENGINE
+            ):
                 return
 
             root_path    = '/omz_intel_models/intel/person-detection-retail-0013/FP32/person-detection-retail-0013'
-            model_path   = self.find_file(root_path + '.xml',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
-            weights_path = self.find_file(root_path + '.bin',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
+            model_path = self.find_file(
+                f'{root_path}.xml', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
+            weights_path = self.find_file(
+                f'{root_path}.bin', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
             img_path     = self.find_file('gpu/lbpcascade/er.png', [os.environ.get('OPENCV_TEST_DATA_PATH')])
             device_id    = 'CPU'
             img          = cv.resize(cv.imread(img_path), (544, 320))
@@ -266,12 +296,18 @@ try:
 
         def test_person_detection_retail_0013(self):
             # NB: Check IE
-            if not cv.dnn.DNN_TARGET_CPU in cv.dnn.getAvailableTargets(cv.dnn.DNN_BACKEND_INFERENCE_ENGINE):
+            if cv.dnn.DNN_TARGET_CPU not in cv.dnn.getAvailableTargets(
+                cv.dnn.DNN_BACKEND_INFERENCE_ENGINE
+            ):
                 return
 
             root_path    = '/omz_intel_models/intel/person-detection-retail-0013/FP32/person-detection-retail-0013'
-            model_path   = self.find_file(root_path + '.xml',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
-            weights_path = self.find_file(root_path + '.bin',   [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')])
+            model_path = self.find_file(
+                f'{root_path}.xml', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
+            weights_path = self.find_file(
+                f'{root_path}.bin', [os.environ.get('OPENCV_DNN_TEST_DATA_PATH')]
+            )
             img_path     = self.find_file('gpu/lbpcascade/er.png', [os.environ.get('OPENCV_TEST_DATA_PATH')])
             device_id    = 'CPU'
             img          = cv.resize(cv.imread(img_path), (544, 320))
@@ -329,7 +365,7 @@ except unittest.SkipTest as e:
 
     class TestSkip(unittest.TestCase):
         def setUp(self):
-            self.skipTest('Skip tests: ' + message)
+            self.skipTest(f'Skip tests: {message}')
 
         def test_skip():
             pass

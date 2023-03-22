@@ -53,7 +53,7 @@ def norm_hamming2(x, y=None):
         def element_norm(element):
             binary_str = bin(element).split('b')[-1]
             if len(binary_str) % 2 == 1:
-                binary_str = '0' + binary_str
+                binary_str = f'0{binary_str}'
             gen = filter(lambda p: p != '00',
                          (binary_str[i:i+2]
                           for i in range(0, len(binary_str), 2)))

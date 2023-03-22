@@ -69,10 +69,7 @@ def keyselector(a):
         elif a[0] == '6':
             depth = 6
         cidx = a.find('C')
-        if cidx < 0:
-            channels = 1
-        else:
-            channels = int(a[a.index('C') + 1:])
+        channels = 1 if cidx < 0 else int(a[a.index('C') + 1:])
         #return (depth & 7) + ((channels - 1) << 3)
         return ((channels-1) & 511) + (depth << 9)
     return a
@@ -116,7 +113,7 @@ def getValueParams(test):
 def nextPermutation(indexes, lists, x, y):
     idx = len(indexes)-1
     while idx >= 0:
-        while idx == x or idx == y:
+        while idx in [x, y]:
             idx -= 1
         if idx < 0:
             return False
@@ -130,7 +127,7 @@ def nextPermutation(indexes, lists, x, y):
     return False
 
 def getTestWideName(sname, indexes, lists, x, y):
-    name = sname + "::("
+    name = f"{sname}::("
     for i in range(len(indexes)):
         if i > 0:
             name += ", "
@@ -140,13 +137,17 @@ def getTestWideName(sname, indexes, lists, x, y):
             name += "Y"
         else:
             name += lists[i][indexes[i]]
-    return str(name + ")")
+    return str(f"{name})")
 
 def getTest(stests, x, y, row, col):
-    for pair in stests:
-        if pair[1][x] == row and pair[1][y] == col:
-            return pair[0]
-    return None
+    return next(
+        (
+            pair[0]
+            for pair in stests
+            if pair[1][x] == row and pair[1][y] == col
+        ),
+        None,
+    )
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -185,10 +186,7 @@ if __name__ == "__main__":
     argsnum = len(tests[0][1])
     sname = tests[0][0].shortName()
 
-    arglists = []
-    for i in range(argsnum):
-        arglists.append({})
-
+    arglists = [{} for _ in range(argsnum)]
     names = set()
     names1 = set()
     for pair in tests:
@@ -204,28 +202,36 @@ if __name__ == "__main__":
             for i in range(argsnum):
                 arglists[i][pair[1][i]] = 1
 
-    if names1 or len(names) != 1:
+    if names1:
         print("Error - unable to create tables for functions from different test suits:", file=sys.stderr)
         i = 1
         for name in sorted(names):
             print("%4s:   %s" % (i, name), file=sys.stderr)
             i += 1
-        if names1:
-            print("Other suits in this log (can not be chosen):", file=sys.stderr)
-            for name in sorted(names1):
-                print("%4s:   %s" % (i, name), file=sys.stderr)
-                i += 1
+        print("Other suits in this log (can not be chosen):", file=sys.stderr)
+        for name in sorted(names1):
+            print("%4s:   %s" % (i, name), file=sys.stderr)
+            i += 1
+        sys.exit(1)
+
+    elif len(names) != 1:
+        print("Error - unable to create tables for functions from different test suits:", file=sys.stderr)
+        for i, name in enumerate(sorted(names), start=1):
+            print("%4s:   %s" % (i, name), file=sys.stderr)
         sys.exit(1)
 
     if argsnum < 2:
-        print("Error - tests from %s have less than 2 parameters" % sname, file=sys.stderr)
+        print(
+            f"Error - tests from {sname} have less than 2 parameters",
+            file=sys.stderr,
+        )
         exit(1)
 
     for i in range(argsnum):
         arglists[i] = sorted([str(key) for key in arglists[i].keys()], key=alphanum_keyselector)
 
     if options.generateHtml and options.format != "moinwiki":
-        htmlPrintHeader(sys.stdout, "Report %s for %s" % (args[0], sname))
+        htmlPrintHeader(sys.stdout, f"Report {args[0]} for {sname}")
 
     indexes = [0] * argsnum
     x = int(options.x)
@@ -240,10 +246,9 @@ if __name__ == "__main__":
             t = pair[0]
             v = pair[1]
             for i in range(argsnum):
-                if i != x and i != y:
-                    if v[i] != arglists[i][indexes[i]]:
-                        t = None
-                        break
+                if i not in [x, y] and v[i] != arglists[i][indexes[i]]:
+                    t = None
+                    break
             if t:
                 stests.append(pair)
 
@@ -255,8 +260,7 @@ if __name__ == "__main__":
             tbl.newRow()
             tbl.newCell("x", row)
             for col in arglists[y]:
-                case = getTest(stests, x, y, row, col)
-                if case:
+                if case := getTest(stests, x, y, row, col):
                     status = case.get("status")
                     if status != "run":
                         tbl.newCell(col, status, color = "red")
